@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Custom Multiple File Upload</title>
+<style>
+/* Global styles */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  text-align: center;
+  background-color: #a2bee4;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+header {
+  background-color: #78e65c;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+}
+
+footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
+
+
+.custom-file-upload {
+  display: inline-block;
+  padding: 15px 30px;
+  cursor: pointer;
+  background-color: #d486a6;
+  border-radius: 8px;
+  font-size: 18px;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.custom-file-upload:hover {
+  background-color: #e0e0e0;
+}
+
+#file-upload {
+  display: none;
+}
+
+#file-list {
+  list-style: none;
+  padding: 0;
+  text-align: left;
+  margin-top: 20px;
+}
+
+#file-list li {
+  margin-bottom: 12px;
+  padding: 12px;
+  background-color: #51ee73;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#file-list li:hover {
+  background-color: #e0e0e0;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+}
+
+.file-info i {
+  margin-right: 10px;
+  font-size: 20px;
+  color: #555;
+}
+
+.file-name {
+  flex: 1;
+}
+
+.file-size {
+  color: #777;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+  .container {
+    padding: 10px;
+  }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Custom Multiple File Upload</h1>
+</header>
+<div class="container">
+  <label for="file-upload" class="custom-file-upload">
+    <i class="fa fa-cloud-upload"></i> Choose Files
+  </label>
+  <input id="file-upload" type="file" multiple>
+  <ul id="file-list"></ul>
+</div>
+<footer>
+  <p>&copy; 2024 Your Company. All rights reserved.</p>
+</footer>
+<script>
+document.getElementById('file-upload').addEventListener('change', handleFileSelect);
+
+function handleFileSelect(event) {
+  const files = event.target.files;
+  const fileList = document.getElementById('file-list');
+
+  fileList.innerHTML = '';
+
+  for (let i = 0; i < files.length; i++) {
+    const li = document.createElement('li');
+    li.classList.add('file-item');
+
+    const fileInfo = document.createElement('div');
+    fileInfo.classList.add('file-info');
+
+    const icon = document.createElement('i');
+    icon.classList.add('fa', 'fa-file');
+    icon.style.color = '#2196F3'; // File icon color
+    fileInfo.appendChild(icon);
+
+    const fileName = document.createElement('div');
+    fileName.classList.add('file-name');
+    fileName.textContent = files[i].name;
+    fileInfo.appendChild(fileName);
+
+    const fileSize = document.createElement('div');
+    fileSize.classList.add('file-size');
+    fileSize.textContent = formatFileSize(files[i].size);
+    fileInfo.appendChild(fileSize);
+
+    li.appendChild(fileInfo);
+    fileList.appendChild(li);
+  }
+}
+
+function formatFileSize(size) {
+  if (size === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+  const i = Math.floor(Math.log(size) / Math.log(k));
+  return parseFloat((size / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+</script>
+</body>
+</html>
